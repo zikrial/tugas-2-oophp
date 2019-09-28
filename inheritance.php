@@ -6,34 +6,41 @@ class Produk {
            $penerbit,
            $harga,
            $jmlHalaman,
-           $waktuMain,
-           $tipe;
+           $waktuMain;
 
-    public function __construct( $judul = "judul", $penulis = "penulis", $penerbit = "penerbit", $harga = 0, $jmlHalaman = 0, $waktuMain = 0, $tipe) {
+    public function __construct( $judul = "judul", $penulis = "penulis", $penerbit = "penerbit", $harga = 0, $jmlHalaman = 0, $waktuMain = 0) {
         $this->judul = $judul;
         $this->penulis = $penulis;
         $this->penerbit = $penerbit;
         $this->harga = $harga;
         $this->jmlHalaman = $jmlHalaman;
         $this->waktuMain = $waktuMain;
-        $this->tipe = $tipe;
     }
 
     public function getLabel() {
         return "$this->penulis, $this->penerbit";
     }
 
-    public function getInfoLengkap() {
-        $str = "{$this->tipe} : {$this->judul} | {$this->getLabel()} (Rp. {$this->harga})";
-        if ($this->tipe == "Komik") {
-            $str .=  " - {$this->jmlHalaman} Halaman.";
-        } else if ($this->tipe == "Game") {
-            $str .=  " - {$this->waktuMain} Jam.";
-        }
+    public function getInfoProduk() {
+        $str = "{$this->judul} | {$this->getLabel()} (Rp. {$this->harga})";
         return $str;
 
     }
 
+}
+
+class Komik extends Produk {
+    public function getInfoKomik() {
+        $str = "Komik : {$this->getInfoProduk()} - {$this->jmlHalaman} Halaman.";
+        return $str;
+    }
+}
+
+class Game extends Produk {
+    public function getInfoGame() {
+        $str = "Game : {$this->getInfoProduk()} - {$this->waktuMain} Jam.";
+        return $str;
+    }
 }
 
 class CetakInfoProduk {
@@ -43,11 +50,11 @@ class CetakInfoProduk {
     }
 }
 
-$produk1 = new Produk("Naruto", "Masashi Kishimoto", "Shonen Jump",30000, 100, 0, "Komik");
-$produk2 = new Produk("Uncharted", "Neil Drukmann", "Sony Computer", 250000, 0, 50, "Game");
+$produk1 = new Komik("Naruto", "Masashi Kishimoto", "Shonen Jump",30000, 100, 0);
+$produk2 = new Game("Uncharted", "Neil Drukmann", "Sony Computer", 250000, 0, 50);
 
-echo $produk1->getInfoLengkap();
+echo $produk1->getInfoKomik();
 echo"<br>";
-echo $produk2->getInfoLengkap();
+echo $produk2->getInfoGame();
 
 ?>
