@@ -1,7 +1,11 @@
 <?php
 
+interface InfoProduk {
+    public function getInfoProduk();
+}
+
 abstract class Produk {
-    private   $judul,
+    protected   $judul,
               $penulis,
               $penerbit,
               $harga,
@@ -42,12 +46,7 @@ abstract class Produk {
         return "$this->penulis, $this->penerbit";
     }
 
-    abstract public function getInfoProduk();
-    
-    public function getInfo() {
-        $str = "{$this->judul} | {$this->getLabel()} (Rp. {$this->harga})";
-        return $str;
-    }
+    abstract public function getInfo();
     
     public function setHarga( $harga ) {
         $this->harga = $harga;
@@ -67,7 +66,7 @@ abstract class Produk {
 
 }
 
-class Komik extends Produk {
+class Komik extends Produk implements InfoProduk {
     public $jmlHalaman;
 
     public function __construct( $judul = "judul", $penulis = "penulis", $penerbit = "penerbit", $harga = 0, $jmlHalaman = 0 ) {
@@ -79,9 +78,14 @@ class Komik extends Produk {
         $str = "Komik : " . $this->getInfo() . " - {$this->jmlHalaman} Halaman.";
         return $str;
     }
+    
+    public function getInfo() {
+        $str = "{$this->judul} | {$this->getLabel()} (Rp. {$this->harga})";
+        return $str;
+    }
 }
 
-class Game extends Produk {
+class Game extends Produk implements InfoProduk {
     public $waktuMain;
 
     public function __construct( $judul = "judul", $penulis = "penulis", $penerbit = "penerbit", $harga = 0, $waktuMain = 0 ) {
@@ -91,6 +95,11 @@ class Game extends Produk {
 
     public function getInfoProduk() {
         $str = "Game :  " . $this->getInfo() . " - {$this->waktuMain} Jam.";
+        return $str;
+    }
+    
+    public function getInfo() {
+        $str = "{$this->judul} | {$this->getLabel()} (Rp. {$this->harga})";
         return $str;
     }
 }
